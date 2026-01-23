@@ -20,3 +20,7 @@ export const createUserService = async (data) => {
 
   return newUser;
 };
+
+export const getAllUserService = async() =>{
+    return await User.find();
+}
