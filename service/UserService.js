@@ -24,3 +24,10 @@ export const createUserService = async (data) => {
 export const getAllUserService = async() =>{
     return await User.find();
 }
+export const deleteUserService = async (id) =>{
+    const user = await User.findById(id);
+    if(!user){
+       throw new Error("User not found");
+    }
+    return await User.findByIdAndDelete(user._id);
+}

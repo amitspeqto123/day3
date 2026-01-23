@@ -1,6 +1,7 @@
 import { User } from "../model/User.js";
 import {
   createUserService,
+  deleteUserService,
   getAllUserService,
 } from "../service/UserService.js";
 
@@ -89,24 +90,40 @@ export const getAlluser = async (req, res) => {
     });
   }
 };
+// export const deleteUser = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const user = await User.findById(id);
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+//     const deletedUser = await User.findByIdAndDelete(id);
+//     return res.status(200).json({
+//       success: true,
+//       message: "user deleted successfully..",
+//       deleteUser,
+//     });
+//   } catch (error) {
+//     console.log("Error in deleting user", error.message);
+//   }
+// };
+
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    const deletedUser = await User.findByIdAndDelete(id);
+    await deleteUserService(id);
     return res.status(200).json({
-      success: true,
-      message: "user deleted successfully..",
-      deleteUser,
-    });
+        success: true,
+        message: "User Deleted successfully.."
+    })
   } catch (error) {
-    console.log("Error in deleting user", error.message);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 export const userFindById = async (req, res) => {
