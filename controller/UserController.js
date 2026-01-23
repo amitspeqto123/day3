@@ -3,6 +3,8 @@ import {
   createUserService,
   deleteUserService,
   getAllUserService,
+  userFindByIdService,
+  userUpdateService,
 } from "../service/UserService.js";
 
 // export const createuser = async (req, res) => {
@@ -116,9 +118,9 @@ export const deleteUser = async (req, res) => {
     const { id } = req.params;
     await deleteUserService(id);
     return res.status(200).json({
-        success: true,
-        message: "User Deleted successfully.."
-    })
+      success: true,
+      message: "User Deleted successfully..",
+    });
   } catch (error) {
     return res.status(400).json({
       success: false,
@@ -126,52 +128,85 @@ export const deleteUser = async (req, res) => {
     });
   }
 };
+// export const userFindById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const user = await User.findById(id);
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "User fetched by id..",
+//       user,
+//     });
+//   } catch (error) {
+//     console.log("Error in single user", error.message);
+//   }
+// };
+
 export const userFindById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
+    const singleUser = await userFindByIdService(id);
     return res.status(200).json({
       success: true,
-      message: "User fetched by id..",
-      user,
+      message: "User fetched by own id",
+      singleUser,
     });
   } catch (error) {
-    console.log("Error in single user", error.message);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+// export const updateUser = async (req, res) => {
+//   try {
+//     const { name, email, age, location } = req.body;
+//     const { id } = req.params;
+//     const user = await User.findById(id);
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+//     // if(name) user.name = name;
+//     // if(email) user.email = email;
+//     // if(age) user.age = age;
+//     // if(location) user.location = location;
+//     // const updateUser = await user.save();
+//     const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+//       new: true,
+//       runValidators: true,
+//     });
+//     return res.status(201).json({
+//       success: true,
+//       message: "User updated successfully..",
+//       updatedUser,
+//     });
+//   } catch (error) {
+//     console.log("Error in updating user", error.message);
+//   }
+// };
 
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, age, location } = req.body;
-    const { id } = req.params;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    // if(name) user.name = name;
-    // if(email) user.email = email;
-    // if(age) user.age = age;
-    // if(location) user.location = location;
-    // const updateUser = await user.save();
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    return res.status(201).json({
-      success: true,
-      message: "User updated successfully..",
-      updatedUser,
-    });
+    const {id} = req.params;
+    const updatedUser = await userUpdateService(id, req.body);
+    return res.status(200).json({
+        success: true,
+        message: "User updated successfully..",
+        updatedUser
+    })
   } catch (error) {
-    console.log("Error in updating user", error.message);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };

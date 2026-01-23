@@ -31,3 +31,18 @@ export const deleteUserService = async (id) =>{
     }
     return await User.findByIdAndDelete(user._id);
 }
+export const userFindByIdService = async (id) =>{
+    const user = await User.findById(id);
+    if(!user){
+       throw new Error("User not found");
+    }
+    return await User.findById(user._id);
+}
+export const userUpdateService = async (id, data) =>{
+    const { name, email, age, location } = data;
+    const user = await User.findById(id);
+    if(!user){
+       throw new Error("User not found");
+    }
+    return await User.findByIdAndUpdate(user._id, data, {new: true, runValidators: true});
+}
