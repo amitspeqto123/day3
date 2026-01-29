@@ -196,13 +196,13 @@ export const userFindById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const updatedUser = await userUpdateService(id, req.body);
     return res.status(200).json({
-        success: true,
-        message: "User updated successfully..",
-        updatedUser
-    })
+      success: true,
+      message: "User updated successfully..",
+      updatedUser,
+    });
   } catch (error) {
     return res.status(400).json({
       success: false,
